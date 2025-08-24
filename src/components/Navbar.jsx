@@ -14,7 +14,13 @@ import { Link, NavLink } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import ResponsiveMenu from "./ResponsiveMenu";
 
-function Navbar({ getLocation, setError, location, openDropDown, setOpenDropDown }) {
+function Navbar({
+  getLocation,
+  setError,
+  location,
+  openDropDown,
+  setOpenDropDown,
+}) {
   const [openNav, setOpenNav] = useState(false);
   const { cartItem } = useCart();
 
@@ -41,7 +47,7 @@ function Navbar({ getLocation, setError, location, openDropDown, setOpenDropDown
             </h1>
           </Link>
 
-          <div className="md:flex gap-1 cursor-pointer text-gray-700 items-center text-sm sm:text-base hidden">
+          <div className="md:flex gap-1 cursor-pointer text-gray-700 items-center text-sm sm:text-base hidden" onClick={toggleDropDown}>
             <MapPin className="text-red-500" onClick={getLocation} />
             <div className="flex flex-col leading-tight font-semibold">
               {location && Object.values(location).some(Boolean) ? (
@@ -54,12 +60,12 @@ function Navbar({ getLocation, setError, location, openDropDown, setOpenDropDown
               )}
             </div>
 
-            <FaCaretDown onClick={toggleDropDown} />
+            <FaCaretDown  />
           </div>
 
           {/* Dropdown */}
           {openDropDown && (
-            <div className="w-[250px] bg-white fixed z-50 top-16 left-4 sm:left-60 shadow-2xl border-2 border-gray-100 p-5 rounded-md">
+            <div className="w-[250px] bg-white fixed z-50 top-16 left-4 sm:left-60 shadow-2xl border-2 border-gray-100 p-5 rounded-md hidden md:block">
               <h1 className="flex justify-between font-semibold mb-4 text-lg sm:text-xl">
                 Change Location
                 <span>
@@ -112,13 +118,27 @@ function Navbar({ getLocation, setError, location, openDropDown, setOpenDropDown
               <UserButton />
             </SignedIn>
           </div>
-          {
-            openNav ? 
-              <HiMenuAlt1 className='h-7 w-17 md:hidden' onClick={()=>setOpenNav(false)}/> : <HiMenuAlt3 onClick={()=>setOpenNav(true)} className='h-7 w-7 md:hidden' />
-          }
+          {openNav ? (
+            <HiMenuAlt1
+              className="h-7 w-17 md:hidden"
+              onClick={() => setOpenNav(false)}
+            />
+          ) : (
+            <HiMenuAlt3
+              onClick={() => setOpenNav(true)}
+              className="h-7 w-7 md:hidden"
+            />
+          )}
         </nav>
       </div>
-      <ResponsiveMenu openNav={openNav} setOpenNav={setOpenNav} />
+      <ResponsiveMenu
+        openNav={openNav}
+        setOpenNav={setOpenNav}
+        location={location}
+        getLocation={getLocation}
+        openDropDown={openDropDown}
+        setOpenDropDown={setOpenDropDown}
+      />
     </div>
   );
 }
