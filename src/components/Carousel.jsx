@@ -5,13 +5,14 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Category from "./Category";
+import { useNavigate } from "react-router-dom";
 
 function Carousel() {
   // const { data } = useContext(DataContext);
   //by this line we dont need to import DataContext and useContext
    
   const { data } = getData();
-  
+  const navigate = useNavigate()
 
   // Custom Arrow Components
   function NextArrow({ onClick }) {
@@ -72,7 +73,9 @@ function Carousel() {
                   <p className="text-gray-400 line-clamp-3 text-sm sm:text-base">
                     {item.description}
                   </p>
-                  <button className="bg-gradient-to-r from-red-500 to-purple-500 hover:from-purple-500 hover:to-red-500 text-white px-4 py-2 rounded-md cursor-pointer transition-colors duration-300">
+                  <button 
+                  onClick={()=>navigate(`/products/${item.id}`)}
+                  className="bg-gradient-to-r from-red-500 to-purple-500 hover:from-purple-500 hover:to-red-500 text-white px-4 py-2 rounded-md cursor-pointer transition-colors duration-300">
                     Shop Now
                   </button>
                 </div>
@@ -80,6 +83,7 @@ function Carousel() {
                 {/* Right Section - Image */}
                 <div className="w-full max-w-[200px] sm:max-w-[450px] h-[300px] sm:h-[450px]">
                   <img
+                    onClick={()=>navigate(`/products/${item.id}`)}
                     src={item.image}
                     alt={item.title}
                     className="rounded-full hover:scale-105 transition-transform duration-300 shadow-2xl shadow-red-400 bg-white p-4 w-full h-full object-contain"

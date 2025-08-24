@@ -1,6 +1,9 @@
 import React from "react";
 import banner from "../assets/banner.jpg";
+import { useNavigate } from "react-router-dom";
+
 const MidBanner = () => {
+  const navigate = useNavigate()
   return (
     <div className="bg-gray-100 py-4 md:py-24 sm:py-12 text-white">
       <div
@@ -19,7 +22,9 @@ const MidBanner = () => {
               Discover the latest designer products with unbeatable prices and
               free shipping on all orders.
             </p>
-            <button className="px-4 py-2 md:px-6 md:py-3 bg-red-500 hover:bg-red-600 rounded-lg cursor-pointer font-semibold transition duration-300">
+            <button 
+            onClick={()=>navigate('/products')}
+            className="px-4 py-2 md:px-6 md:py-3 bg-red-500 hover:bg-red-600 rounded-lg cursor-pointer font-semibold transition duration-300">
               Shop Now
             </button>
           </div>
