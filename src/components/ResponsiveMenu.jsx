@@ -112,15 +112,18 @@ const ResponsiveMenu = ({
                 {item.label}
               </NavLink>
             </li>
+            
           ))}
+          <li>
+            <SignedOut >
+          <SignInButton className="w-full bg-red-500 text-white py-2 mt-4 rounded-lg cursor-pointer text-base font-medium hover:bg-red-400 transition" />
+        </SignedOut></li>
         </ul>
       </nav>
 
       {/* Auth Section */}
-      <div className="mt-auto">
-        <SignedOut>
-          <SignInButton className="w-full bg-red-500 text-white py-2 rounded-lg cursor-pointer text-base font-medium hover:bg-red-400 transition" />
-        </SignedOut>
+      <div className="flex justify-center mt-6">
+        
       </div>
     </div>
   );
