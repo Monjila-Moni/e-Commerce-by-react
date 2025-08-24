@@ -8,6 +8,7 @@ import { CartProvider } from "./context/CartContext.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "react-scroll-to-top";
+import { DiscountProvider } from "./context/DiscountContext.jsx";
 
 
 
@@ -22,9 +23,11 @@ if (!PUBLISHABLE_KEY) {
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <CartProvider>
+      <DiscountProvider>
+        <CartProvider>
         <DataProvider>
           <App />
+
           <ScrollToTop
             color="white"
             smooth
@@ -35,6 +38,7 @@ createRoot(document.getElementById("root")).render(
               justifyContent: "center",
             }}
           />
+          
           <ToastContainer
             position="bottom-right"
             autoClose={5000}
@@ -49,6 +53,7 @@ createRoot(document.getElementById("root")).render(
           />
         </DataProvider>
       </CartProvider>
+      </DiscountProvider>
     </ClerkProvider>
   </StrictMode>
 );

@@ -1,4 +1,3 @@
-import { getData } from "../context/DataContext";
 
 function FilterSection({
   search,
@@ -7,10 +6,13 @@ function FilterSection({
   setSelectedCategories,
   priceRange,
   setPriceRange,
+  allCategory,
+  handleCheckboxChange,
+  resetFilter,
   selectedBrand,
   setSelectedBrand,
 }) {
-  const { data, getFilteredData } = getData();
+
 
   // const getFilteredData = (object, key)=>{
   //     object.map((item)=>{
@@ -19,24 +21,7 @@ function FilterSection({
   //     })
   // }
 
-  const allCategory = ["All", ...getFilteredData(data, "category")];
-  // const allBrand = ["All", ...getFilteredData(data, "brand")] brand not available in this api
-  // const allBrand = ["Aarong", "Satrang", "Twelve"]
 
-  const handleCheckboxChange = (category) => {
-    if (category === "All") {
-      setSelectedCategories(["All"]);
-    } else {
-      let updatedCategories = [...selectedCategories];
-      if (updatedCategories.includes(category)) {
-        updatedCategories = updatedCategories.filter((cat) => cat != category);
-      } else {
-        updatedCategories = updatedCategories.filter((cat) => cat !== "All");
-        updatedCategories.push(category);
-      }
-      setSelectedCategories(updatedCategories);
-    }
-  };
   // const handleBrandChange = (brand)=>{
   //   if(brand === "All"){
   //     setSelectedBrand(["All"])
@@ -116,11 +101,9 @@ function FilterSection({
       </div>
       <button
         className="bg-red-500 text-white rounded-md px-3 py-1 mt-5 cursor-pointer hover:bg-red-600 active:scale-95 transition-all"
-        onClick={() => {
-          setSearch("");
-          setSelectedCategories("All");
-          setPriceRange([0, 200]);
-        }}
+        onClick={
+          resetFilter
+        }
       >
         Reset Filters
       </button>

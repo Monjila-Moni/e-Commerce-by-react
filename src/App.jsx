@@ -8,6 +8,8 @@ import Products from "./pages/Products";
 import SingleProductDetails from "./pages/SingleProductDetails";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import CategoryProduct from "./pages/CategoryProduct";
+import { useCart } from "./context/CartContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
 
   const [error, setError] = useState("");
   const [openDropDown, setOpenDropDown] = useState(false);
+  const {cartItem, setCartItem} = useCart() //for local storage
 
   const getLocation = async () => {
     if (!navigator.geolocation) {
@@ -60,6 +63,8 @@ function App() {
     );
   };
 
+  //Load cart from local storage
+
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
@@ -78,6 +83,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<SingleProductDetails />} />
+            <Route path="/category/:category" element={<CategoryProduct/>} />
 
             <Route
               path="/cart"
@@ -89,6 +95,9 @@ function App() {
                     getLocation={getLocation}
                   />
                 </ProtectedRoute>
+           
+                  
+               
               }
             />
           </Routes>

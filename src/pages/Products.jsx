@@ -6,15 +6,42 @@ import ProductCard from "../components/ProductCard";
 import Pagination from "../components/Pagination";
 import Lottie from "lottie-react";
 import notfound from "../assets/notfound.json";
+import FilterForMobile from "../components/FilterForMobile";
 
 function Products() {
-  const { data } = getData();
+  const { data, getFilteredData } = getData();
   const [search, setSearch] = useState("");
   const [priceRange, setPriceRange] = useState([0, 200]);
   const [selectedCategories, setSelectedCategories] = useState(["All"]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
+
+  const [openFilter, setOpenFilter] = useState(false);
+  const allCategory = ["All", ...getFilteredData(data, "category")];
+
+  const handleCheckboxChange = (category) => {
+    if (category === "All") {
+      setSelectedCategories(["All"]);
+    } else {
+      let updatedCategories = [...selectedCategories];
+      if (updatedCategories.includes(category)) {
+        updatedCategories = updatedCategories.filter((cat) => cat != category);
+      } else {
+        updatedCategories = updatedCategories.filter((cat) => cat !== "All");
+        updatedCategories.push(category);
+      }
+      setSelectedCategories(updatedCategories);
+      setOpenFilter(false)
+    }
+  };
+
+  const resetFilter = () => {
+    setSearch("");
+    setSelectedCategories("All");
+    setPriceRange([0, 200]);
+    setOpenFilter(false)
+  };
 
   // Filtering logic
   const filteredProducts = (data || []).filter((item) => {
@@ -40,18 +67,31 @@ function Products() {
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
+      window.scrollTo(0, 0);
     }
   };
 
   // Reset to first page when filters change
   useEffect(() => {
     setCurrentPage(1);
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
   }, [search, selectedCategories, priceRange]);
 
   return (
     <>
       <div className="max-w-6xl mx-auto px-4 mb-10">
+        <FilterForMobile
+          search={search}
+          setSearch={setSearch}
+          selectedCategories={selectedCategories}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          allCategory={allCategory}
+          handleCheckboxChange={handleCheckboxChange}
+          resetFilter={resetFilter}
+          setOpenFilter={setOpenFilter}
+          openFilter={openFilter}
+        />
         {data.length > 0 ? (
           <>
             <div className="flex flex-col md:flex-row gap-8 md:items-stretch">
@@ -63,6 +103,9 @@ function Products() {
                 setSelectedCategories={setSelectedCategories}
                 priceRange={priceRange}
                 setPriceRange={setPriceRange}
+                allCategory={allCategory}
+                handleCheckboxChange={handleCheckboxChange}
+                resetFilter={resetFilter}
                 // optional: keep a fixed-ish width on md+ so columns feel consistent
                 className="md:w-72 md:flex-shrink-0"
               />

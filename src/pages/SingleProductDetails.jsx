@@ -4,13 +4,16 @@ import Loading from "../assets/Loading4.webm";
 import { useRef } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import { useCart } from "../context/CartContext";
+import { useDiscount } from "../context/DiscountContext";
+
 
 function SingleProductDetails() {
   const { id } = useParams();
   const { data } = getData();
+  const {getDiscount} = useDiscount()
   const product = data?.find((item) => item.id === Number(id));
  
-  const discount = Math.floor(Math.random() * (15 - 3 + 1)) + 3;
+  const discount = getDiscount(product.id)
   const navigate = useNavigate();
   const {addToCart} = useCart()
 
@@ -46,7 +49,7 @@ function SingleProductDetails() {
               <img
                 src={product.image}
                 alt={product.title}
-                className="w-full max-h-[500px] rounded-2xl object-contain  p-4"
+                className="w-full max-h-[300px] md:max-h-[400px] rounded-2xl object-contain  p-4"
               />
             </div>
 
@@ -67,7 +70,7 @@ function SingleProductDetails() {
                   {Math.round(product.price + (product.price * discount) / 100)}
                 </span>
                 <span className="bg-red-500 px-4 py-1.5 rounded-full text-sm text-white font-semibold shadow-sm">
-                  {discount}% OFF
+                  {discount}% Discount
                 </span>
               </p>
 

@@ -1,10 +1,16 @@
 import { createContext, useContext, useState } from "react";
 import { toast } from "react-toastify";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const CartContext = createContext([]);
-export const CartProvider = ({ children }) => {
-  const [cartItem, setCartItem] = useState([]);
 
+export const CartProvider = ({ children }) => {
+
+  const [cartItem, setCartItem] = useLocalStorage('cartItem',[]);
+
+
+  
+  
   const addToCart = (product) => {
     // setCartItem((prev) => [...prev, product]);
     // toast.success("Product is added to cart")

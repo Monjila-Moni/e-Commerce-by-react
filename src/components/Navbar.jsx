@@ -5,24 +5,25 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import { MapPin } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { FaCaretDown } from "react-icons/fa";
 import { IoCartOutline } from "react-icons/io5";
+import { HiMenuAlt1, HiMenuAlt3 } from "react-icons/hi";
 import { Link, NavLink } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import ResponsiveMenu from "./ResponsiveMenu";
 
-function Navbar({
-  getLocation,
-  setError,
-  location,
-  openDropDown,
-  setOpenDropDown,
-}) {
+function Navbar({ getLocation, setError, location, openDropDown, setOpenDropDown }) {
+  const [openNav, setOpenNav] = useState(false);
   const { cartItem } = useCart();
 
   const toggleDropDown = () => {
     setOpenDropDown((prev) => !prev);
+  };
+
+  const toggleNav = () => {
+    setOpenNav((prev) => !prev);
   };
 
   useEffect(() => {
@@ -30,8 +31,8 @@ function Navbar({
   }, []);
 
   return (
-    <div className="bg-white py-4 shadow-2xl px-4">
-      <div className="max-w-9xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+    <div className="bg-white py-4 shadow-2xl px-4 md:px-0">
+      <div className="max-w-9xl mx-auto flex justify-between items-center gap-4">
         {/* Logo + Location */}
         <div className="flex flex-wrap gap-4 sm:gap-7 items-center justify-center sm:justify-start">
           <Link to={"/"}>
@@ -40,7 +41,7 @@ function Navbar({
             </h1>
           </Link>
 
-          <div className="flex gap-1 cursor-pointer text-gray-700 items-center text-sm sm:text-base">
+          <div className="md:flex gap-1 cursor-pointer text-gray-700 items-center text-sm sm:text-base hidden">
             <MapPin className="text-red-500" onClick={getLocation} />
             <div className="flex flex-col leading-tight font-semibold">
               {location && Object.values(location).some(Boolean) ? (
@@ -77,7 +78,8 @@ function Navbar({
 
         {/* Menu Section */}
         <nav className="flex flex-wrap justify-center sm:justify-end gap-4 sm:gap-7 items-center">
-          <ul className="flex flex-wrap justify-center gap-4 sm:gap-7 items-center text-lg sm:text-xl font-semibold">
+          {/* Desktop Menu */}
+          <ul className="md:flex flex-wrap justify-center gap-4 sm:gap-7 items-center text-lg sm:text-xl font-semibold hidden">
             {["/", "/products", "/about", "/contact"].map((path, idx) => (
               <NavLink
                 key={idx}
@@ -93,6 +95,7 @@ function Navbar({
             ))}
           </ul>
 
+          {/* Cart */}
           <Link to={"/cart"} className="relative">
             <IoCartOutline className="h-6 w-6 sm:h-7 sm:w-7" />
             <span className="bg-red-500 px-2 rounded-full absolute -top-3 -right-3 text-xs sm:text-sm">
@@ -100,7 +103,8 @@ function Navbar({
             </span>
           </Link>
 
-          <div>
+          {/* Auth */}
+          <div className="hidden md:block">
             <SignedOut>
               <SignInButton className="bg-red-500 text-white py-1 px-3 rounded-md cursor-pointer text-sm sm:text-base" />
             </SignedOut>
@@ -108,8 +112,13 @@ function Navbar({
               <UserButton />
             </SignedIn>
           </div>
+          {
+            openNav ? 
+              <HiMenuAlt1 className='h-7 w-17 md:hidden' onClick={()=>setOpenNav(false)}/> : <HiMenuAlt3 onClick={()=>setOpenNav(true)} className='h-7 w-7 md:hidden' />
+          }
         </nav>
       </div>
+      <ResponsiveMenu openNav={openNav} setOpenNav={setOpenNav} />
     </div>
   );
 }
